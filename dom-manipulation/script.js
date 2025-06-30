@@ -4,6 +4,8 @@ const showNewQuoteBtn = document.getElementById("newQuote-btn");
 const quoteList = document.getElementById("quote-list");
 const showModal = document.getElementById("quoteModal");
 const closeModal = document.querySelector(".close-btn");
+const modalQuoteText = document.getElementById("modalQuoteText");
+const modalQuoteCategory = document.getElementById("modalQuoteCategory");
 
 function createAddQuoteForm() {
   const formDiv = document.createElement("div");
@@ -102,10 +104,8 @@ function showRandomQuote() {
   const randomQuote = quotes[randomIndex];
 
   //set-modal content
-  document.getElementById("modalQuoteText").innerHTML = `"${randomQuote.text}"`;
-  document.getElementById(
-    "modalQuoteCategory"
-  ).innerHTML = `-${randomQuote.category}`;
+  modalQuoteText.innerHTML = `"${randomQuote.text}"`;
+  modalQuoteCategory.innerHTML = `-${randomQuote.category}`;
 
   //show-modal
   showModal.style.display = "block";
@@ -129,31 +129,101 @@ showNewQuoteBtn.addEventListener("click", showRandomQuote);
 
 // quotes.forEach(addQuoteToDom); //showing default quotes
 
-  function importFromJsonFile(event) {
-    const fileReader = new FileReader();
-    fileReader.onload = function(event) {
-      const importedQuotes = JSON.parse(event.target.result);
-      quotes.push(...importedQuotes);
-      saveQuotes();
-      alert('Quotes imported successfully!');
-    };
-    fileReader.readAsText(event.target.files[0]);
-  }
+//save quotes to localStorage
+function saveQuotes() {
+  localStorage.setItem("quotes", JSON.stringify(quotes));
+}
 
 //loading quotes from localStorage
 function loadQuotes() {
   const storedQuotes = localStorage.getItem("quotes");
   if (storedQuotes) {
-    quotes = JSON.parse(storedQuotes);
-    quotes.forEach((quoteObj) => {
-      addQuoteToDom(quoteObj);
-    });
+    const imported = JSON.parse(storedQuotes);
+    //merge
+    quotes = imported;
   }
+  //clear current DOm list, then re-render
+  quoteList.innerHTML = "";
+  quotes.forEach(addQuoteToDom);
 }
 
-//save quotes to localStorage
-function saveQuotes() {
-  localStorage.setItem("quotes", JSON.stringify(quotes));
+function exportToJsonFile() {
+  if (quotes.length === 0) {
+    alert("No quotes to export!");
+    return;
+  }
+
+  // Create a blob out of the JSON string
+  const blob = new Blob([JSON.stringify(quotes, null, 2)], {
+    type: "application/json",
+  });
+
+  //turns the blob into a temporary file URL link blob:http://.....
+  const url = URL.createObjectURL(blob);
+
+  // Create a temporary <a> to trigger download
+  const a = document.createElement("a");
+  a.href = url;
+  const now = new Date();
+  //getting the year
+  const year = now.getFullYear();
+  //getting the month
+  const month = now.getMonth();
+  const standardMonth = month + 1;
+  //getting the day
+  const day = now.getDate();
+
+  a.download = `quotes-${year}-${standardMonth}-${day}.json`;
+
+  document.body.appendChild(a); //adds the (a) to the DOM just briefly so it can be 'clicked
+  a.click();
+  document.body.removeChild(a); //removes the (a) afterwards
+
+  // release the blob URL
+  URL.revokeObjectURL(url);
+}
+
+// wire up the export button
+document
+  .getElementById("exportBtn")
+  .addEventListener("click", exportToJsonFile);
+
+function importFromJsonFile(event) {
+  const file = event.target.files[0]; //gets the first file the user selected
+  if (!file) return; //if no file was uploaded then, return
+
+  const reader = new FileReader(); // creates a fileReader obj, which can read text from files
+
+  reader.onload = function (e) {
+    try {
+      const imported = JSON.parse(e.target.result);
+
+      // Validate it’s an array of {text,category} objects
+      if (!Array.isArray(imported)) throw new Error();
+      imported.forEach((q) => {
+        if (typeof q.text !== "string" || typeof q.category !== "string")
+          throw new Error(); //if anything is invalid, throw an error
+      });
+
+      // Merge into quotes array
+      quotes.push(...imported);
+      saveQuotes();
+
+      // Re-render list
+      quoteList.innerHTML = "";
+      quotes.forEach(addQuoteToDom);
+
+      modalQuoteText.innerHTML = `Quotes imported successfully!`;
+      showModal.style.display = "block";
+    } catch {
+      modalQuoteText.innerHTML = `Invalid JSON file format.`;
+      showModal.style.display = `block`;
+    }
+  };
+  reader.readAsText(file);
+
+  // reset the input so the same file can be re-imported if needed
+  event.target.value = "";
 }
 
 //load the localStorage as the windows loads

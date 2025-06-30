@@ -52,6 +52,23 @@ h1 {
 #newQuote-btn:hover {
   background-color: rgb(83, 83, 211);
 }
+#exportBtn {
+  padding: 8px;
+  border-radius: 4px;
+  margin-top: 8px;
+  color: white;
+  background-color: rgb(100, 100, 202);
+}
+#exportBtn{
+  background-color: rgb(83, 83, 211);
+}
+#importFile {
+  padding: 8px;
+  border-radius: 4px;
+  margin-top: 8px;
+  color: white;
+  background-color: rgb(100, 100, 202);
+}
 ul {
   list-style-type: none;
   padding: 0;
