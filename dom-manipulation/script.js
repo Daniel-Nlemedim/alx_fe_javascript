@@ -5,6 +5,38 @@ const quoteList = document.getElementById("quote-list");
 const showModal = document.getElementById("quoteModal");
 const closeModal = document.querySelector(".close-btn");
 
+function createAddQuoteForm() {
+  const formDiv = document.createElement("div");
+
+  // Quote text input
+  const quoteInput = document.createElement("input");
+  quoteInput.id = "newQuoteText";
+  quoteInput.type = "text";
+  quoteInput.placeholder = "Enter a new quote";
+
+  // Category input
+  const categoryInput = document.createElement("input");
+  categoryInput.id = "newQuoteCategory";
+  categoryInput.type = "text";
+  categoryInput.placeholder = "Enter quote category";
+
+  // Add button
+  const addBtn = document.createElement("button");
+  addBtn.textContent = "Add Quote";
+  addBtn.classList.add("addQuote-btn");
+  addBtn.onclick = addQuote;
+
+  // Append to form
+  formDiv.appendChild(quoteInput);
+  formDiv.appendChild(categoryInput);
+  formDiv.appendChild(addBtn);
+
+  // Add to page (before quote list)
+  const container = document.getElementById("quoteDisplay");
+  container.insertBefore(formDiv, document.getElementById("quote-list"));
+}
+
+
 let quotes = [
   {
     text: "Be yourself and do what you have to do, because no one cares.",
@@ -37,14 +69,14 @@ function addQuoteToDom(quoteObj) {
 }
 
 function addQuote() {
-  const createAddQuotes = newQuoteText.value.trim();
+  const quoteText = newQuoteText.value.trim();
   const quoteCategory = newQuoteCategory.value.trim();
 
-  if (createAddQuotes === "" || quoteCategory === "") {
+  if (quoteText === "" || quoteCategory === "") {
     alert("Please enter a quote.");
     return;
   }
-  const quoteObj = { text: createAddQuotes, category: quoteCategory };
+  const quoteObj = { text: quoteText, category: quoteCategory };
 
   quotes.push(quoteObj);
   addQuoteToDom(quoteObj);
