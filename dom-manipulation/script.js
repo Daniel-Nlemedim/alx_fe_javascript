@@ -53,7 +53,7 @@ function addQuote() {
   newQuoteCategory.value = "";
 }
 
-function displayRandomQuote() {
+function showRandomQuote() {
   if (quotes.length === 0) {
     alert("No quotes available");
     return;
@@ -74,7 +74,7 @@ function displayRandomQuote() {
   showModal.style.display = "block";
 }
 
-showNewQuoteBtn.addEventListener("click", displayRandomQuote)
+showNewQuoteBtn.addEventListener("click", showRandomQuote)
 
 //close model when clicked
 closeModal.onclick = function () {
@@ -88,6 +88,6 @@ window.onclick = function (event){
         modal.style.display = "none"
     }
 }
-showNewQuoteBtn.addEventListener("click", displayRandomQuote);
+showNewQuoteBtn.addEventListener("click", showRandomQuote);
 
 // quotes.forEach(addQuoteToDom); //showing default quotes
