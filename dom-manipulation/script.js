@@ -7,11 +7,11 @@ const closeModal = document.querySelector(".close-btn");
 
 let quotes = [
   {
-    text: "Try to always be yourself; everyone is different",
-    category: "Inspiration",
+    text: "",
+    category: "",
   },
-  { text: "Keep pushing in every circumstance", category: "Motivation" },
-  { text: "The goal clean and clear of every distraction", category: "Goal" },
+  { text: "", category: "" },
+  { text: "", category: "" },
 ];
 
 function addQuoteToDom(quoteObj) {
@@ -61,14 +61,14 @@ function showRandomQuote() {
 
   const randomIndex = Math.floor(Math.random() * quotes.length);
   const randomQuote = quotes[randomIndex];
-  
+
   //set-modal content
   document.getElementById(
     "modalQuoteText"
-  ).textContent = `"${randomQuote.text}"`;
+  ).innerHTML = `"${randomQuote.text}"`;
   document.getElementById(
     "modalQuoteCategory"
-  ).textContent = `-${randomQuote.category}`;
+  ).innerHTML = `-${randomQuote.category}`;
 
   //show-modal
   showModal.style.display = "block";
@@ -76,7 +76,7 @@ function showRandomQuote() {
 
 //close model when clicked
 closeModal.onclick = function () {
-  document.getElementById("quoteModal").style.display = "none";
+  showModal.style.display = "none";
 };
 
 //close modal when clicking outside the modal
