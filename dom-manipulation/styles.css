@@ -1,0 +1,36 @@
+body{
+    margin: 0;
+    padding: 0;
+    overflow: auto;
+}
+h1{
+    text-align: center;
+    padding-top: 30px ;
+}
+#quoteDisplay{
+    text-align: center;
+    padding: 30px;
+    
+}
+#newQuoteText{
+    padding: 8px;
+    border-radius: 8px;
+    margin-right: 30px;
+}
+#newQuoteCategory{
+    padding: 8px;
+    border-radius: 8px;
+}
+.addQuote-btn{
+    padding: 8px;
+    border-radius: 8px;
+    margin-left: 30px;
+}
+.newQuote-btn{
+    text-align: center;
+    padding: 30px;
+}
+#newQuote{
+    padding: 8px;
+    border-radius:8px ;
+}
