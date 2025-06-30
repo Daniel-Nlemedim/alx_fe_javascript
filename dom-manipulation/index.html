@@ -7,9 +7,8 @@
     <link rel="stylesheet" href="/dom-manipulation/styles.css" />
   </head>
   <body>
-    <h1>Dynamic Quote Generator</h1>
-
     <div id="quoteDisplay">
+      <h1>Dynamic Quote Generator</h1>
       <input id="newQuoteText" type="text" placeholder="Enter a new quote" />
       <input
         id="newQuoteCategory"
@@ -17,13 +16,15 @@
         placeholder="Enter quote category"
       />
       <button class="addQuote-btn" onclick="addQuote()">Add Quote</button>
+      <button id="newQuote-btn">Show New Quote</button>
 
+      <div class="list-div">
+        <ul id="quote-list">
+          <!-- added quotes goes here -->
+        </ul>
+      </div>
     </div>
 
-    <div class="newQuote-btn">
-        <button  id="newQuote">Show New Quote</button>
-    </div>
-
-    <script src="script.js"></script>
+    <script src="/dom-manipulation/script.js"></script>
   </body>
 </html>
