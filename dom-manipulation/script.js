@@ -37,14 +37,14 @@ function addQuoteToDom(quoteObj) {
 }
 
 function addQuote() {
-  const quoteText = newQuoteText.value.trim();
+  const createAddQuotes = newQuoteText.value.trim();
   const quoteCategory = newQuoteCategory.value.trim();
 
-  if (quoteText === "" || quoteCategory === "") {
+  if (createAddQuotes === "" || quoteCategory === "") {
     alert("Please enter a quote.");
     return;
   }
-  const quoteObj = { text: quoteText, category: quoteCategory };
+  const quoteObj = { text: createAddQuotes, category: quoteCategory };
 
   quotes.push(quoteObj);
   addQuoteToDom(quoteObj);
