@@ -14,6 +14,7 @@
         id="newQuoteCategory"
         type="text"
         placeholder="Enter quote category"
+        
       />
       <button class="addQuote-btn" onclick="addQuote()">Add Quote</button>
       <button id="newQuote-btn">Show New Quote</button>
@@ -22,6 +23,14 @@
         <ul id="quote-list">
           <!-- added quotes goes here -->
         </ul>
+      </div>
+    </div>
+
+    <div id="quoteModal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <p id="modalQuoteText"></p>
+        <p id="modalQuoteCategory"></p>
       </div>
     </div>
 
