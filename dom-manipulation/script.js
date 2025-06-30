@@ -65,10 +65,10 @@ function showRandomQuote() {
   //set-modal content
   document.getElementById(
     "modalQuoteText"
-  ).innerHTML = `"${randomQuote.text}"`;
+  ).textContent = `"${randomQuote.text}"`;
   document.getElementById(
     "modalQuoteCategory"
-  ).innerHTML = `-${randomQuote.category}`;
+  ).textContent = `-${randomQuote.category}`;
 
   //show-modal
   showModal.style.display = "block";
