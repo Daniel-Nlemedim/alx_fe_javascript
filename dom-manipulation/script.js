@@ -36,14 +36,19 @@ function createAddQuoteForm() {
   container.insertBefore(formDiv, document.getElementById("quote-list"));
 }
 
-
 let quotes = [
   {
     text: "Be yourself and do what you have to do, because no one cares.",
     category: "Motivation",
   },
-  { text: "The only limit to our realization of tomorrow is our doubts of today.", category: "Realization" },
-  { text: "Life is what happens when you're busy making other plans.", category: "Life" },
+  {
+    text: "The only limit to our realization of tomorrow is our doubts of today.",
+    category: "Realization",
+  },
+  {
+    text: "Life is what happens when you're busy making other plans.",
+    category: "Life",
+  },
 ];
 
 function addQuoteToDom(quoteObj) {
@@ -63,6 +68,7 @@ function addQuoteToDom(quoteObj) {
       (q) =>
         !(q.text === quoteObj.text && quoteObj.category === quoteObj.category)
     );
+    saveQuotes();
   };
   newQuote.appendChild(removeBtn);
   quoteList.prepend(newQuote);
@@ -81,6 +87,7 @@ function addQuote() {
   quotes.push(quoteObj);
   addQuoteToDom(quoteObj);
 
+  saveQuotes();
   newQuoteText.value = "";
   newQuoteCategory.value = "";
 }
@@ -95,9 +102,7 @@ function showRandomQuote() {
   const randomQuote = quotes[randomIndex];
 
   //set-modal content
-  document.getElementById(
-    "modalQuoteText"
-  ).innerHTML = `"${randomQuote.text}"`;
+  document.getElementById("modalQuoteText").innerHTML = `"${randomQuote.text}"`;
   document.getElementById(
     "modalQuoteCategory"
   ).innerHTML = `-${randomQuote.category}`;
@@ -106,7 +111,7 @@ function showRandomQuote() {
   showModal.style.display = "block";
 }
 
-showNewQuoteBtn.addEventListener("click", showRandomQuote)
+showNewQuoteBtn.addEventListener("click", showRandomQuote);
 
 //close model when clicked
 closeModal.onclick = function () {
@@ -114,12 +119,31 @@ closeModal.onclick = function () {
 };
 
 //close modal when clicking outside the modal
-window.onclick = function (event){
-    const modal = showModal;
-    if(event.target === modal){
-        modal.style.display = "none"
-    }
-}
+window.onclick = function (event) {
+  const modal = showModal;
+  if (event.target === modal) {
+    modal.style.display = "none";
+  }
+};
 showNewQuoteBtn.addEventListener("click", showRandomQuote);
 
 // quotes.forEach(addQuoteToDom); //showing default quotes
+
+//loading quotes from localStorage
+function loadQuotes() {
+  const storedQuotes = localStorage.getItem("quotes");
+  if (storedQuotes) {
+    quotes = JSON.parse(storedQuotes);
+    quotes.forEach((quoteObj) => {
+      addQuoteToDom(quoteObj);
+    });
+  }
+}
+
+//save quotes to localStorage
+function saveQuotes() {
+  localStorage.setItem("quotes", JSON.stringify(quotes));
+}
+
+//load the localStorage as the windows loads
+document.addEventListener("DOMContentLoaded", loadQuotes);
