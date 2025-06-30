@@ -7,11 +7,11 @@ const closeModal = document.querySelector(".close-btn");
 
 let quotes = [
   {
-    text: "",
-    category: "",
+    text: "Be yourself and do what you have to do, because no one cares.",
+    category: "Motivation",
   },
-  { text: "", category: "" },
-  { text: "", category: "" },
+  { text: "The only limit to our realization of tomorrow is our doubts of today.", category: "Realization" },
+  { text: "Life is what happens when you're busy making other plans.", category: "Life" },
 ];
 
 function addQuoteToDom(quoteObj) {
@@ -53,7 +53,7 @@ function addQuote() {
   newQuoteCategory.value = "";
 }
 
-function showRandomQuote() {
+function displayRandomQuote() {
   if (quotes.length === 0) {
     alert("No quotes available");
     return;
@@ -65,14 +65,16 @@ function showRandomQuote() {
   //set-modal content
   document.getElementById(
     "modalQuoteText"
-  ).textContent = `"${randomQuote.text}"`;
+  ).innerHTML = `"${randomQuote.text}"`;
   document.getElementById(
     "modalQuoteCategory"
-  ).textContent = `-${randomQuote.category}`;
+  ).innerHTML = `-${randomQuote.category}`;
 
   //show-modal
   showModal.style.display = "block";
 }
+
+showNewQuoteBtn.addEventListener("click", displayRandomQuote)
 
 //close model when clicked
 closeModal.onclick = function () {
@@ -86,6 +88,6 @@ window.onclick = function (event){
         modal.style.display = "none"
     }
 }
-showNewQuoteBtn.addEventListener("click", showRandomQuote);
+showNewQuoteBtn.addEventListener("click", displayRandomQuote);
 
 // quotes.forEach(addQuoteToDom); //showing default quotes
