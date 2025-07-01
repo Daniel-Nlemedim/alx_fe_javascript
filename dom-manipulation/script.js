@@ -73,10 +73,11 @@ function populateCategories() {
 }
 
 function filterQuotes() {
+  const selectedCategory = categoryFilter.value
   quoteList.innerHTML = "";
 
   const filteredQuotes =
-    categoryFilter.value === "all"
+    selectedCategory === "all"
       ? quotes
       : quotes.filter((quote) => quote.category === categoryFilter);
 
@@ -263,4 +264,8 @@ function importFromJsonFile(event) {
 
 document.getElementById("categoryFilter").addEventListener("change", filterQuotes);
 //load the localStorage as the windows loads
-document.addEventListener("DOMContentLoaded", loadQuotes, populateCategories);
+document.addEventListener("DOMContentLoaded", () => {
+  loadQuotes();
+  populateCategories();
+});
+
