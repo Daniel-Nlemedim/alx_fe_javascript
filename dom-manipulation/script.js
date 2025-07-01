@@ -56,18 +56,31 @@ let quotes = [
 
 function populateCategories() {
 
+  // Clear existing options
+  categoryFilter.innerHTML = '<option value="all">All Categories</option>';
+
+  // Get unique categories from quotes array
+  const categories = [...new Set(quotes.map(q => q.category))];
+
+  // Add each category as an option
+  categories.forEach((category) => {
     const filterOption = document.createElement("option");
     filterOption.value = category;
     filterOption.textContent = category;
     categoryFilter.appendChild(filterOption);
+  });
+
 }
 
-function filterQuotes(){
-  categoryFilter.innerHTML = `<option value = "all">All categories</option>`;
-  //extract unique categories from the quotes array
-  const categories = [...new Set(quotes.map((q) => q.category))];
+function filterQuotes() {
+  quoteList.innerHTML = "";
 
-  categories.forEach(populateCategories)
+  const filteredQuotes =
+    categoryFilter.value === "all"
+      ? quotes
+      : quotes.filter((quote) => quote.category === categoryFilter);
+
+      filteredQuotes.forEach(addQuoteToDom)
 }
 
 function addQuoteToDom(quoteObj) {
@@ -106,6 +119,7 @@ function addQuote() {
 
   quotes.push(quoteObj);
   addQuoteToDom(quoteObj);
+  populateCategories()
 
   saveQuotes();
   newQuoteText.value = "";
@@ -145,7 +159,7 @@ window.onclick = function (event) {
 };
 showNewQuoteBtn.addEventListener("click", showRandomQuote);
 
-// quotes.forEach(addQuoteToDom); //showing default quotes
+quotes.forEach(addQuoteToDom); //showing default quotes
 
 //save quotes to localStorage
 function saveQuotes() {
@@ -163,6 +177,7 @@ function loadQuotes() {
   //clear current DOm list, then re-render
   quoteList.innerHTML = "";
   quotes.forEach(addQuoteToDom);
+  populateCategories()
 }
 
 function exportToJsonFile() {
@@ -226,6 +241,7 @@ function importFromJsonFile(event) {
       // Merge into quotes array
       quotes.push(...imported);
       saveQuotes();
+      populateCategories()
 
       // Re-render list
       quoteList.innerHTML = "";
@@ -245,4 +261,4 @@ function importFromJsonFile(event) {
 }
 
 //load the localStorage as the windows loads
-document.addEventListener("DOMContentLoaded", loadQuotes);
+document.addEventListener("DOMContentLoaded", loadQuotes, populateCategories);
