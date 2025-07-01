@@ -82,6 +82,7 @@ function filterQuotes() {
 
       filteredQuotes.forEach(addQuoteToDom)
 }
+localStorage.setItem("categoryFilter", categoryFilter)
 
 function addQuoteToDom(quoteObj) {
   const newQuote = document.createElement("li");
@@ -260,5 +261,6 @@ function importFromJsonFile(event) {
   event.target.value = "";
 }
 
+document.getElementById("categoryFilter").addEventListener("change", filterQuotes);
 //load the localStorage as the windows loads
 document.addEventListener("DOMContentLoaded", loadQuotes, populateCategories);
