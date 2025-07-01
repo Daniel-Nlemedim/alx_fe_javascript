@@ -132,3 +132,12 @@ li {
 .close-btn:hover {
   color: black;
 }
+
+select{
+  border: 1px solid #ccc;;
+  padding: 5px;
+  border-radius: 4px;
+}
+.category-div{
+  margin: 8px;
+}

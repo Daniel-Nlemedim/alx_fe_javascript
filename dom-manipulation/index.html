@@ -15,15 +15,21 @@
         type="text"
         placeholder="Enter quote category"
       />
-    
+      <div class =" category-div">
+        <select id="categoryFilter" onchange="filterQuotes()">
+          <option value="all">All Categories</option>
+          <!-- Dynamically populated categories -->
+        </select>
+      </div>
+
       <button class="addQuote-btn" onclick="addQuote()">Add Quote</button>
       <button id="newQuote-btn">Show New Quote</button>
 
-        <!-- Export button -->
-         <button id="exportBtn">Export Quotes as JSON</button>
+      <!-- Export button -->
+      <button id="exportBtn">Export Quotes as JSON</button>
 
       <!-- Import control -->
-        <input
+      <input
         type="file"
         id="importFile"
         accept=".json"
@@ -35,9 +41,8 @@
           <!-- added quotes goes here -->
         </ul>
       </div>
-
     </div>
-    
+
     <div id="quoteModal" class="modal">
       <div class="modal-content">
         <span class="close-btn">&times;</span>

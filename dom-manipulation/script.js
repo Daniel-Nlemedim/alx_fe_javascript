@@ -6,6 +6,7 @@ const showModal = document.getElementById("quoteModal");
 const closeModal = document.querySelector(".close-btn");
 const modalQuoteText = document.getElementById("modalQuoteText");
 const modalQuoteCategory = document.getElementById("modalQuoteCategory");
+const categoryFilter = document.getElementById("categoryFilter");
 
 function createAddQuoteForm() {
   const formDiv = document.createElement("div");
@@ -53,10 +54,26 @@ let quotes = [
   },
 ];
 
+function populateCategories() {
+
+    const filterOption = document.createElement("option");
+    filterOption.value = category;
+    filterOption.textContent = category;
+    categoryFilter.appendChild(filterOption);
+}
+
+function filterQuotes(){
+  categoryFilter.innerHTML = `<option value = "all">All categories</option>`;
+  //extract unique categories from the quotes array
+  const categories = [...new Set(quotes.map((q) => q.category))];
+
+  categories.forEach(populateCategories)
+}
+
 function addQuoteToDom(quoteObj) {
   const newQuote = document.createElement("li");
   const textNode = document.createTextNode(
-    `"${quoteObj.text}" - ${quoteObj.category}`
+    `"${quoteObj.text.toUpperCase()}" - ${quoteObj.category.toUpperCase()}`
   );
   newQuote.appendChild(textNode);
 
@@ -76,6 +93,7 @@ function addQuoteToDom(quoteObj) {
   quoteList.prepend(newQuote);
 }
 
+//adding quotes function
 function addQuote() {
   const quoteText = newQuoteText.value.trim();
   const quoteCategory = newQuoteCategory.value.trim();
