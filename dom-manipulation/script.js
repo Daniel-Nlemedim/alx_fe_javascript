@@ -8,6 +8,8 @@ const modalQuoteText = document.getElementById("modalQuoteText");
 const modalQuoteCategory = document.getElementById("modalQuoteCategory");
 const categoryFilter = document.getElementById("categoryFilter");
 
+const SERVER_URL = "https://jsonplaceholder.typicode.com/posts/1"; // simulate remote server"
+
 function createAddQuoteForm() {
   const formDiv = document.createElement("div");
 
@@ -55,12 +57,11 @@ let quotes = [
 ];
 
 function populateCategories() {
-
   // Clear existing options
   categoryFilter.innerHTML = '<option value="all">All Categories</option>';
 
   // Get unique categories from quotes array
-  const categories = [...new Set(quotes.map(q => q.category))];
+  const categories = [...new Set(quotes.map((q) => q.category))];
 
   // Add each category as an option
   categories.forEach((category) => {
@@ -69,11 +70,10 @@ function populateCategories() {
     filterOption.textContent = category;
     categoryFilter.appendChild(filterOption);
   });
-
 }
 
 function filterQuotes() {
-  const selectedCategory = categoryFilter.value
+  const selectedCategory = categoryFilter.value;
   quoteList.innerHTML = "";
 
   const filteredQuotes =
@@ -81,9 +81,9 @@ function filterQuotes() {
       ? quotes
       : quotes.filter((quote) => quote.category === categoryFilter);
 
-      filteredQuotes.forEach(addQuoteToDom)
+  filteredQuotes.forEach(addQuoteToDom);
 }
-localStorage.setItem("categoryFilter", categoryFilter)
+localStorage.setItem("categoryFilter", categoryFilter);
 
 function addQuoteToDom(quoteObj) {
   const newQuote = document.createElement("li");
@@ -121,7 +121,7 @@ function addQuote() {
 
   quotes.push(quoteObj);
   addQuoteToDom(quoteObj);
-  populateCategories()
+  populateCategories();
 
   saveQuotes();
   newQuoteText.value = "";
@@ -179,7 +179,7 @@ function loadQuotes() {
   //clear current DOm list, then re-render
   quoteList.innerHTML = "";
   quotes.forEach(addQuoteToDom);
-  populateCategories()
+  populateCategories();
 }
 
 function exportToJsonFile() {
@@ -243,7 +243,7 @@ function importFromJsonFile(event) {
       // Merge into quotes array
       quotes.push(...imported);
       saveQuotes();
-      populateCategories()
+      populateCategories();
 
       // Re-render list
       quoteList.innerHTML = "";
@@ -262,10 +262,51 @@ function importFromJsonFile(event) {
   event.target.value = "";
 }
 
-document.getElementById("categoryFilter").addEventListener("change", filterQuotes);
+function syncWithServer() {
+  fetch(SERVER_URL)
+    .then((Response) => Response.json())
+    .then((serverData) => {
+      if (!Array.isArray(serverData)) return;
+      const localQuotes = JSON.parse(localStorage.getItem("quotes")) || []; // get the quotes or an empty array
+      const conflict =
+        JSON.stringify(localQuotes) !== JSON.stringify(serverData);
+      if (conflict) {
+        quotes = serverData;
+        localStorage.setItem("quotes", JSON.stringify(serverData));
+        quoteList.innerHTML = "";
+        quotes.forEach(addQuoteToDom);
+        populateCategories();
+        showNotification("Quotes synced from server. Conflict were resolved");
+      }
+    })
+    .catch((error) => {
+      console.log("Server sync failed:", error);
+    });
+}
+
+function showNotification(message) {
+  let existing = document.getElementById("notification");
+  if (!existing) {
+    existing = document.createElement("div");
+    existing.id = "notification";
+    existing.style.cssText =
+      "background:#ffd700;color:#333;padding:10px;text-align:center;margin-top:10px;";
+    document.body.insertBefore(existing, document.body.firstChild);
+  }
+  existing.textContent = message;
+  existing.style.display = "block";
+  setTimeout(() => {
+    existing.style.display = "none";
+  }, 5000);
+}
+
+document
+  .getElementById("categoryFilter")
+  .addEventListener("change", filterQuotes)
+
 //load the localStorage as the windows loads
 document.addEventListener("DOMContentLoaded", () => {
   loadQuotes();
   populateCategories();
+  setInterval(syncWithServer, 30000);
 });
-
