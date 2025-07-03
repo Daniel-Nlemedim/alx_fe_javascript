@@ -227,7 +227,7 @@ function syncQuotes() {
       quoteList.innerHTML = "";
       quotes.forEach(addQuoteToDom);
       populateCategories();
-      showNotification("Quotes synced from server. Conflicts were resolved.");
+      showNotification("Quotes synced with server!");
     }
   });
 }
